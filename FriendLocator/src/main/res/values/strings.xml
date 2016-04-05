@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Friend Locator</string>
+    <string name="title_activity_signup">Sign up</string>
+    <string name="title_activity_main">Home</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_rank">Rank</string>
+    <string name="action_profile">Profile</string>
+    <string name="action_rank">Rank</string>
+    <string name="action_search">Search</string>
+</resources>
