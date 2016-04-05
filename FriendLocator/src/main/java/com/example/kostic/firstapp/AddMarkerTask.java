@@ -119,6 +119,7 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
                                 .title(info));
                         ctx.addMarkerDialog.dismiss();
                     }
+                    ctx.pd.dismiss();
 
                 }
 }

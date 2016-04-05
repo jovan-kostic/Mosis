@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     GoogleMap map;
     LocationManager locationManager;
+    ProgressDialog pd;
     AlertDialog addMarkerDialog;
     String username;
     TextView tv_info;
@@ -81,7 +82,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 addMarkerButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        pd = new ProgressDialog(MainActivity.this);
+                        pd.setMessage("Adding marker...");
+                        pd.setCancelable(false);
+                        pd.show();
                         tv_info = (TextView) addMarkerDialog.findViewById(R.id.info);
                         info = tv_info.getText().toString();
                         AddMarkerTask addMarkerTask = new AddMarkerTask(MainActivity.this);
