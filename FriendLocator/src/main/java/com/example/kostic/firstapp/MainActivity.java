@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
 
         username = getIntent().getStringExtra("username");
-
+        //test comment
        // Get the LocationManager object from the System Service LOCATION_SERVICE
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 
