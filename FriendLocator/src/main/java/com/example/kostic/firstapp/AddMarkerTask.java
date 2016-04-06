@@ -34,7 +34,7 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
     String info;
     Double longitude;
     Double latitude;
-
+    String add_marker_url;
 
     AddMarkerTask(MainActivity ctx) {
         this.ctx = ctx;
@@ -43,6 +43,7 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
+        add_marker_url = "http://192.168.1.4/fl_server/add_marker.php";
         super.onPreExecute();
     }
 
@@ -64,9 +65,10 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
                 connection.setConnectTimeout(2000);
                 OutputStream outputStream = connection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String data = URLEncoder.encode("info", "UTF-8") +"="+URLEncoder.encode(info, "UTF-8")+"&"+
+                String data = URLEncoder.encode("user", "UTF-8") +"="+URLEncoder.encode(ctx.username, "UTF-8")+"&"+
                         URLEncoder.encode("longitude", "UTF-8") +"="+URLEncoder.encode(longitude.toString(), "UTF-8")+"&"+
-                        URLEncoder.encode("latitude", "UTF-8") +"="+URLEncoder.encode(latitude.toString(), "UTF-8");
+                        URLEncoder.encode("latitude", "UTF-8") +"="+URLEncoder.encode(latitude.toString(), "UTF-8")+"&"+
+                        URLEncoder.encode("info", "UTF-8") +"="+URLEncoder.encode(info, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -110,7 +112,6 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
                         toast.show();
                     }
                     else {
-                        //ctx.map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
                         LatLng currentPosition = new LatLng(latitude, longitude);
 
                         ctx.map.addMarker(new MarkerOptions()
@@ -119,7 +120,7 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
                                 .title(info));
                         ctx.addMarkerDialog.dismiss();
                     }
-                    ctx.pd.dismiss();
 
+                    ctx.pd.dismiss();
                 }
 }

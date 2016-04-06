@@ -45,29 +45,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_main);
 
-        username = getIntent().getStringExtra("username");
-        //test comment
-       // Get the LocationManager object from the System Service LOCATION_SERVICE
-        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-
-        // Create a criteria object needed to retrieve the provider
-        Criteria criteria = new Criteria();
-
-        // Get the name of the best available provider
-        final String provider = locationManager.getBestProvider(criteria, true);
-
-        // We can use the provider immediately to get the last known location
-        try { Location location = locationManager.getLastKnownLocation(provider);
-        } catch (SecurityException e) {  }
-
-        // request that the provider send this activity GPS updates every 30 seconds
-        try { locationManager.requestLocationUpdates(provider, 30000, 0, this);
-        } catch (SecurityException e) {  }
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //adding marker
+        username = getIntent().getStringExtra("username");
+
+
+        //ADDING MARKER
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,11 +90,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
+        //GETTING MARKERS
+        
+        pd = new ProgressDialog(MainActivity.this);
+        pd.setMessage("Map preparing...");
+        pd.setCancelable(false);
+        pd.show();
+        GetMarkerTask getMarkerTask = new GetMarkerTask(MainActivity.this);
+        getMarkerTask.execute();
+
+
+        //LOCATION AND MAP SERVICES
+
+        // Get the LocationManager object from the System Service LOCATION_SERVICE
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+
+        // Create a criteria object needed to retrieve the provider
+        Criteria criteria = new Criteria();
+
+        // Get the name of the best available provider
+        final String provider = locationManager.getBestProvider(criteria, true);
+
+        // We can use the provider immediately to get the last known location
+        try { Location location = locationManager.getLastKnownLocation(provider);
+        } catch (SecurityException e) {  }
+
+        // request that the provider send this activity GPS updates every 30 seconds
+        try { locationManager.requestLocationUpdates(provider, 30000, 0, this);
+        } catch (SecurityException e) {  }
+
+        //getting map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
 
    }
 
@@ -125,9 +138,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
             map.getUiSettings().setMapToolbarEnabled(false);
-        } catch (SecurityException e) {
+        } catch (SecurityException e) {}
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (map != null)
+        {
+            drawMarker(location);
         }
     }
+
+    private void drawMarker(Location location){
+
+        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
+
+        MarkerOptions marker = new MarkerOptions()
+                .position(currentPosition)
+                .title(username);
+
+        map.addMarker(marker);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    @Override
+    public void onProviderEnabled(String provider) {}
+    @Override
+    public void onProviderDisabled(String provider) {}
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,43 +198,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        if (map != null)
-        {
-            drawMarker(location);
-        }
-    }
-
-    private void drawMarker(Location location){
-
-
-        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
-
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
-
-        MarkerOptions marker = new MarkerOptions()
-                .position(currentPosition)
-                .title(username);
-
-        map.addMarker(marker);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
 
     }
 
