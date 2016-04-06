@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        //LatLng nis = new LatLng(43.324722, 21.903333);
-        // map.addMarker(new MarkerOptions().position(nis).title("Marker in Nis"));
         try {
             Criteria criteria = new Criteria();
             String provider = locationManager.getBestProvider(criteria, true);
