@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     GoogleMap map;
     LocationManager locationManager;
+    Marker marker;
     ProgressDialog pd;
     AlertDialog addMarkerDialog;
     String username;
@@ -148,16 +149,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void drawMarker(Location location){
+        if (marker!=null)
+        {marker.remove();}
 
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
 
-        MarkerOptions marker = new MarkerOptions()
+        MarkerOptions markerOptions = new MarkerOptions()
                 .position(currentPosition)
                 .title(username);
 
-        map.addMarker(marker);
+        marker = map.addMarker(markerOptions);
     }
 
     @Override

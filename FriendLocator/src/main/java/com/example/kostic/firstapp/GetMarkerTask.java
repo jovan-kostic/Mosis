@@ -6,9 +6,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +32,7 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
     Double latitude;
     String json_url;
     String JSON_STRING;
-
+    Marker marker;
 
 
     GetMarkerTask(MainActivity ctx) {
@@ -116,11 +114,11 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
                 latitude = Double.parseDouble((jsonObject.getString("latitude")));
 
                 LatLng currentPosition = new LatLng(latitude, longitude);
-                ctx.map.addMarker(new MarkerOptions()
+
+                marker = ctx.map.addMarker(new MarkerOptions()
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
                         .position(currentPosition)
                         .title(info));
-
 
                 count++;
             }
