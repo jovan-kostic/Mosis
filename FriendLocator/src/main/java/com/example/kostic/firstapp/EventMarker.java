@@ -1,14 +1,18 @@
 package com.example.kostic.firstapp;
 
+import com.google.android.gms.maps.model.Marker;
+
 public class EventMarker {
 
+    private Marker marker;
     private String user;
     private double longitude;
     private double latitude;
     private String info;
 
-    public EventMarker(String user, double longitude, double latitude, String info)
+    public EventMarker(Marker marker, String user, double longitude, double latitude, String info)
     {
+        this.setMarker(marker);
         this.setUser(user);
         this.setLongitude(longitude);
         this.setLatitude(latitude);
@@ -45,5 +49,13 @@ public class EventMarker {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
     }
 }

@@ -120,6 +120,9 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
                         .position(currentPosition)
                         .title(info));
 
+                EventMarker eventMarker = new EventMarker(marker,ctx.username, longitude,latitude,info);
+                ctx.treeMap.put(ctx.treeMap.size()+1,eventMarker);
+
                 count++;
             }
 

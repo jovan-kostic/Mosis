@@ -3,6 +3,7 @@ package com.example.kostic.firstapp;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -25,15 +26,20 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Circle;
+
+import java.util.TreeMap;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     GoogleMap map;
     LocationManager locationManager;
+    TreeMap<Integer, EventMarker> treeMap = new TreeMap<Integer,EventMarker>();
     Marker marker;
     ProgressDialog pd;
     AlertDialog addMarkerDialog;
@@ -116,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         try { Location location = locationManager.getLastKnownLocation(provider);
         } catch (SecurityException e) {  }
 
-        // request that the provider send this activity GPS updates every 30 seconds
-        try { locationManager.requestLocationUpdates(provider, 30000, 0, this);
+        // request that the provider send this activity GPS updates every 20 seconds
+        try { locationManager.requestLocationUpdates(provider, 20000, 0, this);
         } catch (SecurityException e) {  }
 
         //getting map
@@ -137,6 +143,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
             map.getUiSettings().setMapToolbarEnabled(false);
+
+            //draw radius circle
+            Circle circle = map.addCircle(new CircleOptions()
+                    .center(currentPosition)
+                    .radius(1000)
+                    .strokeColor(getResources().getColor(R.color.colorRed))
+                    .fillColor(getResources().getColor(R.color.colorGrayTransparent)));
+
         } catch (SecurityException e) {}
     }
 
@@ -152,8 +166,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (marker!=null)
         {marker.remove();}
 
+        //distance beetween user currentPosition and first markerPosition(test)
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
+        LatLng markerPosition = treeMap.get(1).getMarker().getPosition();
+
+        float[] distance = new float[1];
+
+        Location.distanceBetween(location.getLatitude(),location.getLongitude(),markerPosition.latitude,markerPosition.longitude,distance);
+
+        toast = Toast.makeText(this, "Distance to marker : " + distance[0] + "m", Toast.LENGTH_LONG);
+        View toastView = toast.getView();
+        toastView.setBackgroundResource(R.drawable.toast);
+        toast.show();
+
+       //update current location
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
 
         MarkerOptions markerOptions = new MarkerOptions()
