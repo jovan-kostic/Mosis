@@ -23,17 +23,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Info"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:layout_marginBottom="10dp"
-                android:textColorHint="@color/colorPrimary"
-                android:textColor="@color/colorPrimary" />
-
             <LinearLayout
                 android:id="@+id/ll3"
                 android:layout_width="match_parent"
@@ -46,8 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Add Marker"
+                    android:text="Capture"
                     android:textColor="#ffffffff"
                     android:background="@drawable/button" />
 
@@ -57,7 +45,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="5dp"
                     android:text="Cancel"
                     android:textColor="#ffffffff"
                     android:background="@drawable/button" />

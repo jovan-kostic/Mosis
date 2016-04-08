@@ -27,6 +27,7 @@ import java.net.URLEncoder;
 public class GetMarkerTask extends AsyncTask<String, Void, String> {
 
     MainActivity ctx;
+    String user;
     String team;
     String info;
     Double longitude;
@@ -34,6 +35,7 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
     String json_url;
     String JSON_STRING;
     Marker marker;
+    MarkerOptions markerOptions;
     Circle circle;
 
 
@@ -87,9 +89,19 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
                     View toastView = toast.getView();
                     toastView.setBackgroundResource(R.drawable.toast);
                     toast.show();
-                    ctx.finish();
+                    ctx.addMarkerDialog.dismiss();
                 }
                 else {
+
+                    if (!ctx.treeMap.isEmpty())
+                    {
+                        for (int i=1;i<ctx.treeMap.size()+1;i++)
+                        {
+                            ctx.treeMap.get(i).getMarker().remove();
+                            ctx.treeMap.get(i).getCircle().remove();
+                        }
+                        ctx.treeMap.clear();
+                    }
                     parseJSON(result);
                 }
 
@@ -111,18 +123,21 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
             {
                 jsonObject = jsonArray.getJSONObject(count);
 
+                user =  (jsonObject.getString("user"));
                 team = (jsonObject.getString("team"));
                 info = (jsonObject.getString("info"));
                 longitude = Double.parseDouble((jsonObject.getString("longitude")));
                 latitude = Double.parseDouble((jsonObject.getString("latitude")));
-
                 LatLng markerPosition = new LatLng(latitude, longitude);
 
                 if (team.equals("Green Team")) {
-                    marker = ctx.map.addMarker(new MarkerOptions()
+
+                    markerOptions = new MarkerOptions()
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.green_flag))
                             .position(markerPosition)
-                            .title(ctx.username));
+                            .title(user);
+
+                    marker = ctx.map.addMarker(markerOptions);
 
                     circle = ctx.map.addCircle(new CircleOptions()
                             .center(markerPosition)
@@ -130,10 +145,13 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
                             .strokeColor(ctx.getResources().getColor(R.color.colorGreen))
                             .fillColor(ctx.getResources().getColor(R.color.colorGreenTransparent)));
                 } else {
-                    marker = ctx.map.addMarker(new MarkerOptions()
+
+                    markerOptions = new MarkerOptions()
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.red_flag))
                             .position(markerPosition)
-                            .title(ctx.username));
+                            .title(user);
+
+                    marker = ctx.map.addMarker(markerOptions);
 
                     circle = ctx.map.addCircle(new CircleOptions()
                             .center(markerPosition)
@@ -142,8 +160,8 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
                             .fillColor(ctx.getResources().getColor(R.color.colorRedTransparent)));
                 }
 
-                EventMarker eventMarker = new EventMarker(marker,circle,ctx.username,longitude,latitude,info);
-                ctx.treeMap.put(ctx.treeMap.size()+1,eventMarker);
+                    EventMarker eventMarker = new EventMarker(marker, circle, user, longitude, latitude, info);
+                    ctx.treeMap.put(ctx.treeMap.size() + 1, eventMarker);
 
                 count++;
             }

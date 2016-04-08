@@ -101,7 +101,7 @@
                     android:layout_marginRight="20dp"
                     android:textSize="20dp"
                     android:text="Green Team"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorGreenRadio"
                     android:onClick="onRadioButtonClicked"/>
                 <RadioButton android:id="@+id/red"
                     android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
                     android:layout_marginLeft="20dp"
                     android:textSize="20dp"
                     android:text="Red Team"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorRedRadio"
                     android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
         </LinearLayout>

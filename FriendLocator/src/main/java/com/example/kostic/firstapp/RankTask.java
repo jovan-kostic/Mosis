@@ -97,7 +97,8 @@ public class RankTask extends AsyncTask<Void, Void, String> {
              JSONObject jsonObject;
              JSONArray jsonArray;
              int count = 0;
-             String username;
+             String username,team;
+             Integer rank;
 
              try {
 
@@ -108,7 +109,9 @@ public class RankTask extends AsyncTask<Void, Void, String> {
                  {
                      jsonObject = jsonArray.getJSONObject(count);
                      username = jsonObject.getString("username");
-                     User user = new User(username,count+1);
+                     team = jsonObject.getString("team");
+                     rank = Integer.parseInt(jsonObject.getString("rank"));
+                     User user = new User(count+1,username,team,rank);
                      rankAdapter.add(user);
 
                      count++;

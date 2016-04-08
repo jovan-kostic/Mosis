@@ -1,6 +1,7 @@
 package com.example.kostic.firstapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,8 +49,10 @@ public class RankAdapter extends ArrayAdapter {
             LayoutInflater layoutInflater = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = layoutInflater.inflate(R.layout.rank_table, parent, false);
             userHolder = new UserHolder();
-            userHolder.tx_rank = (TextView)row.findViewById(R.id.rank);
-            userHolder.tx_username = (TextView)row.findViewById(R.id.username);
+            userHolder.tv_place= (TextView)row.findViewById(R.id.place);
+            userHolder.tv_username = (TextView)row.findViewById(R.id.username);
+            userHolder.tv_team = (TextView)row.findViewById(R.id.team);
+            userHolder.tv_rank = (TextView)row.findViewById(R.id.rank);
             row.setTag(userHolder);
 
         }
@@ -59,25 +62,40 @@ public class RankAdapter extends ArrayAdapter {
         }
 
         User user = (User)this.getItem(position);
-        userHolder.tx_rank.setText(String.valueOf(user.getRank()));
+        userHolder.tv_place.setText(String.valueOf(user.getPlace()));
+
+        //color team
+        if(user.getTeam().equals("Red Team"))
+        {
+            userHolder.tv_team.setTextColor(Color.parseColor("#e3e60b16"));
+            userHolder.tv_team.setText(user.getTeam());
+        }
+        else {
+            userHolder.tv_team.setTextColor(Color.parseColor("#e310a710"));
+            userHolder.tv_team.setText(user.getTeam());
+        }
+
+        userHolder.tv_rank.setText(String.valueOf(user.getRank()));
 
         //bold user
         if (ctx.user.equals(user.getUsername()))
         {
-            userHolder.tx_username.setTypeface(null, Typeface.BOLD);
-            userHolder.tx_username.setText(user.getUsername());
+            userHolder.tv_username.setTypeface(null, Typeface.BOLD);
+            userHolder.tv_username.setText(user.getUsername());
             return row;
         }
 
-        userHolder.tx_username.setTypeface(null, Typeface.NORMAL);
-        userHolder.tx_username.setText(user.getUsername());
+        userHolder.tv_username.setTypeface(null, Typeface.NORMAL);
+        userHolder.tv_username.setText(user.getUsername());
         return row;
     }
 
     static class UserHolder
     {
-        TextView tx_rank;
-        TextView tx_username;
+        TextView tv_place;
+        TextView tv_username;
+        TextView tv_team;
+        TextView tv_rank;
     }
 
 }

@@ -5,21 +5,27 @@
 
     <item
         android:id="@+id/action_profile"
-        android:orderInCategory="1"
         android:title="@string/action_profile"
+        android:orderInCategory="1"
         app:showAsAction="never" />
 
    <item
         android:id="@+id/action_rank"
-        android:orderInCategory="3"
         android:title="@string/action_rank"
+        android:orderInCategory="2"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/search"
         android:title="@string/action_search"
-        android:orderInCategory="200"
+        android:orderInCategory="100"
         android:icon="@drawable/ic_search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/add_friend"
+        android:title="@string/action_add_friend"
+        android:orderInCategory="200"
+        android:icon="@mipmap/add_friend"
         app:showAsAction="always" />
 
 </menu>

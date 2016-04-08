@@ -38,6 +38,9 @@ import java.util.TreeMap;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     GoogleMap map;
+    Double city_longitude;
+    Double city_latitude;
+    int city_radius;
     LocationManager locationManager;
     TreeMap<Integer, EventMarker> treeMap = new TreeMap<Integer,EventMarker>();
     Marker marker;
@@ -45,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     AlertDialog addMarkerDialog;
     String username;
     String team;
-    TextView tv_info;
-    String info;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         username = getIntent().getStringExtra("username");
         team = getIntent().getStringExtra("team");
 
+        city_longitude = 21.8967985; // Nis location
+        city_latitude = 43.31914696;
+        city_radius = 1800;
 
         //ADDING MARKER
 
@@ -72,22 +76,47 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 LayoutInflater inflater = getLayoutInflater();
                 View dialoglayout = inflater.inflate(R.layout.add_marker, null);
+
+
+                Criteria criteria = new Criteria();
+                String provider = locationManager.getBestProvider(criteria, true);
+                float[] distance = new float[1];
+                try {
+
+                    Location location = locationManager.getLastKnownLocation(provider);
+                    Location.distanceBetween(location.getLatitude(),location.getLongitude(),city_latitude,city_longitude,distance);
+                } catch (SecurityException e) {  }
+
+
+                if (distance[0] > city_radius)
+                {
+                    toast = Toast.makeText(MainActivity.this, "You are out of battlefield boundaries", Toast.LENGTH_LONG);
+                    View toastView = toast.getView();
+                    toastView.setBackgroundResource(R.drawable.toast);
+                    toast.show();
+                    return;
+                }
+
                 addMarkerDialog = new AlertDialog.Builder(MainActivity.this).create();
                 addMarkerDialog.setView(dialoglayout);
                 addMarkerDialog.show();
+                pd = new ProgressDialog(MainActivity.this);
+                pd.setMessage("Updating flags...");
+                pd.setCancelable(false);
+                pd.show();
+                GetMarkerTask getMarkerTask = new GetMarkerTask(MainActivity.this);
+                getMarkerTask.execute();
 
                 final Button addMarkerButton = (Button) addMarkerDialog.findViewById(R.id.add_marker);
                 addMarkerButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         pd = new ProgressDialog(MainActivity.this);
-                        pd.setMessage("Adding marker...");
+                        pd.setMessage("Capturing...");
                         pd.setCancelable(false);
                         pd.show();
-                        tv_info = (TextView) addMarkerDialog.findViewById(R.id.info);
-                        info = tv_info.getText().toString();
                         AddMarkerTask addMarkerTask = new AddMarkerTask(MainActivity.this);
-                        addMarkerTask.execute(info);
+                        addMarkerTask.execute();
                     }
                 });
 
@@ -101,16 +130,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
-
-
-        //GETTING MARKERS
-        
-        pd = new ProgressDialog(MainActivity.this);
-        pd.setMessage("Map preparing...");
-        pd.setCancelable(false);
-        pd.show();
-        GetMarkerTask getMarkerTask = new GetMarkerTask(MainActivity.this);
-        getMarkerTask.execute();
 
 
         //LOCATION AND MAP SERVICES
@@ -147,15 +166,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String provider = locationManager.getBestProvider(criteria, true);
             Location location = locationManager.getLastKnownLocation(provider);
             LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(currentPosition)
+                    .title(username);
+
+            marker = map.addMarker(markerOptions);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
             map.getUiSettings().setMapToolbarEnabled(false);
 
-            //draw radius circle
+            //draw circle - city boundaries
+            LatLng cityPosition = new LatLng(city_latitude, city_longitude);
             Circle circle = map.addCircle(new CircleOptions()
-                    .center(currentPosition)
-                    .radius(1800)
+                    .center(cityPosition)
+                    .radius(city_radius)
                     .strokeColor(getResources().getColor(R.color.colorGray))
                     .fillColor(getResources().getColor(R.color.colorGrayTransparent)));
+
+            //GETTING MARKERS INITIAL
+
+            pd = new ProgressDialog(MainActivity.this);
+            pd.setMessage("Map preparing...");
+            pd.setCancelable(false);
+            pd.show();
+            GetMarkerTask getMarkerTask = new GetMarkerTask(MainActivity.this);
+            getMarkerTask.execute();
+
 
         } catch (SecurityException e) {}
     }
@@ -172,19 +207,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (marker!=null)
         {marker.remove();}
 
-        //distance beetween user currentPosition and first markerPosition(test)
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
-        /*LatLng markerPosition = treeMap.get(1).getMarker().getPosition();
-
-        float[] distance = new float[1];
-
-        Location.distanceBetween(location.getLatitude(),location.getLongitude(),markerPosition.latitude,markerPosition.longitude,distance);
-
-        toast = Toast.makeText(this, "Distance to marker : " + distance[0] + "m", Toast.LENGTH_LONG);
-        View toastView = toast.getView();
-        toastView.setBackgroundResource(R.drawable.toast);
-        toast.show();*/
+        LocationUpdateTask locationUpdateTask = new LocationUpdateTask(MainActivity.this);
+        locationUpdateTask.execute(location.getLatitude(),location.getLongitude());
 
        //update current location
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
