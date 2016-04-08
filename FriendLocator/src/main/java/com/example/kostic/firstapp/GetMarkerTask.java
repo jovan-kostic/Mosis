@@ -27,12 +27,14 @@ import java.net.URLEncoder;
 public class GetMarkerTask extends AsyncTask<String, Void, String> {
 
     MainActivity ctx;
+    String team;
     String info;
     Double longitude;
     Double latitude;
     String json_url;
     String JSON_STRING;
     Marker marker;
+    Circle circle;
 
 
     GetMarkerTask(MainActivity ctx) {
@@ -109,18 +111,38 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
             {
                 jsonObject = jsonArray.getJSONObject(count);
 
+                team = (jsonObject.getString("team"));
                 info = (jsonObject.getString("info"));
                 longitude = Double.parseDouble((jsonObject.getString("longitude")));
                 latitude = Double.parseDouble((jsonObject.getString("latitude")));
 
-                LatLng currentPosition = new LatLng(latitude, longitude);
+                LatLng markerPosition = new LatLng(latitude, longitude);
 
-                marker = ctx.map.addMarker(new MarkerOptions()
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
-                        .position(currentPosition)
-                        .title(info));
+                if (team.equals("Green Team")) {
+                    marker = ctx.map.addMarker(new MarkerOptions()
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.green_flag))
+                            .position(markerPosition)
+                            .title(ctx.username));
 
-                EventMarker eventMarker = new EventMarker(marker,ctx.username, longitude,latitude,info);
+                    circle = ctx.map.addCircle(new CircleOptions()
+                            .center(markerPosition)
+                            .radius(300)
+                            .strokeColor(ctx.getResources().getColor(R.color.colorGreen))
+                            .fillColor(ctx.getResources().getColor(R.color.colorGreenTransparent)));
+                } else {
+                    marker = ctx.map.addMarker(new MarkerOptions()
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.red_flag))
+                            .position(markerPosition)
+                            .title(ctx.username));
+
+                    circle = ctx.map.addCircle(new CircleOptions()
+                            .center(markerPosition)
+                            .radius(300)
+                            .strokeColor(ctx.getResources().getColor(R.color.colorRed))
+                            .fillColor(ctx.getResources().getColor(R.color.colorRedTransparent)));
+                }
+
+                EventMarker eventMarker = new EventMarker(marker,circle,ctx.username,longitude,latitude,info);
                 ctx.treeMap.put(ctx.treeMap.size()+1,eventMarker);
 
                 count++;

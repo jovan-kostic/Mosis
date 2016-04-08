@@ -53,6 +53,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             String phone = params[3];
             String username = params[4];
             String password = params[5];
+            String team = params[6];
 
             try {
                 URL url = new URL(sign_up_url);
@@ -66,7 +67,8 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                         URLEncoder.encode("lname", "UTF-8") +"="+URLEncoder.encode(lname, "UTF-8")+"&"+
                         URLEncoder.encode("phone", "UTF-8") +"="+URLEncoder.encode(phone, "UTF-8")+"&"+
                         URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username, "UTF-8")+"&"+
-                        URLEncoder.encode("password", "UTF-8") +"="+URLEncoder.encode(password, "UTF-8");
+                        URLEncoder.encode("password", "UTF-8") +"="+URLEncoder.encode(password, "UTF-8")+"&"+
+                        URLEncoder.encode("team", "UTF-8") +"="+URLEncoder.encode(team, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -143,7 +145,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             protected void onPostExecute(String result){
                 if (ctx2!=null) // sign UP
                 {
-                    if (result.startsWith("Thank you for registering!"))
+                    if (result.startsWith("We are so glad you are joining our team!"))
                     {
                         NavUtils.navigateUpFromSameTask(ctx2);
                     }
@@ -155,15 +157,24 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 }
                 else // sign IN
                 {
-                    if (result.startsWith("Welcome"))
+                    if (result.startsWith("Connection") || result.startsWith("Incorrect"))
                     {
-                      ctx1.startMain();
+                        ctx1.pd.dismiss();
+                        Toast toast = Toast.makeText(ctx1, result, Toast.LENGTH_LONG);
+                        View toastView = toast.getView();
+                        toastView.setBackgroundResource(R.drawable.toast);
+                        toast.show();
                     }
-                    ctx1.pd.dismiss();
-                    Toast toast = Toast.makeText(ctx1, result, Toast.LENGTH_LONG);
-                    View toastView = toast.getView();
-                    toastView.setBackgroundResource(R.drawable.toast);
-                    toast.show();
+                    else
+                    {
+                        ctx1.pd.dismiss();
+                        Toast toast = Toast.makeText(ctx1, "Welcome to " + result, Toast.LENGTH_LONG);
+                        View toastView = toast.getView();
+                        toastView.setBackgroundResource(R.drawable.toast);
+                        toast.show();
+                        ctx1.startMain(result);
+                    }
+
                 }
             }
 }

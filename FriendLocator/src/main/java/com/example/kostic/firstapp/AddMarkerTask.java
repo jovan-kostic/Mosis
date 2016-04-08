@@ -68,7 +68,8 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
                 String data = URLEncoder.encode("user", "UTF-8") +"="+URLEncoder.encode(ctx.username, "UTF-8")+"&"+
                         URLEncoder.encode("longitude", "UTF-8") +"="+URLEncoder.encode(longitude.toString(), "UTF-8")+"&"+
                         URLEncoder.encode("latitude", "UTF-8") +"="+URLEncoder.encode(latitude.toString(), "UTF-8")+"&"+
-                        URLEncoder.encode("info", "UTF-8") +"="+URLEncoder.encode(info, "UTF-8");
+                        URLEncoder.encode("info", "UTF-8") +"="+URLEncoder.encode(info, "UTF-8")+"&"+
+                        URLEncoder.encode("team", "UTF-8") +"="+URLEncoder.encode(ctx.team, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -113,11 +114,17 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
                     }
                     else {
                         LatLng currentPosition = new LatLng(latitude, longitude);
-
-                        ctx.map.addMarker(new MarkerOptions()
-                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
-                                .position(currentPosition)
-                                .title(info));
+                        if (ctx.team.equals("Green Team")) {
+                            ctx.map.addMarker(new MarkerOptions()
+                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.green_flag))
+                                    .position(currentPosition)
+                                    .title(info));
+                        } else {
+                            ctx.map.addMarker(new MarkerOptions()
+                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.red_flag))
+                                    .position(currentPosition)
+                                    .title(info));
+                        }
                         ctx.addMarkerDialog.dismiss();
                     }
 

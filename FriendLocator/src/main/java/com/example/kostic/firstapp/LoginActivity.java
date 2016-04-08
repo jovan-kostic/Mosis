@@ -80,12 +80,13 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
-    public void startMain()
+    public void startMain(String team)
     {
         Intent open_main = new Intent();
         open_main.setAction("com.example.kostic.firstapp.Main");
         open_main.addCategory("android.intent.category.DEFAULT");
         open_main.putExtra("username", username);
+        open_main.putExtra("team",team);
         startActivity(open_main);
         finish();
     }

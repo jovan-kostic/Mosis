@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     ProgressDialog pd;
     AlertDialog addMarkerDialog;
     String username;
+    String team;
     TextView tv_info;
     String info;
 
@@ -56,11 +57,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setSupportActionBar(toolbar);
 
         username = getIntent().getStringExtra("username");
+        team = getIntent().getStringExtra("team");
 
 
         //ADDING MARKER
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if (team.equals("Red Team")){
+
+            fab.setImageDrawable(getResources().getDrawable(R.mipmap.red_flag));
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             //draw radius circle
             Circle circle = map.addCircle(new CircleOptions()
                     .center(currentPosition)
-                    .radius(1000)
-                    .strokeColor(getResources().getColor(R.color.colorRed))
+                    .radius(1800)
+                    .strokeColor(getResources().getColor(R.color.colorGray))
                     .fillColor(getResources().getColor(R.color.colorGrayTransparent)));
 
         } catch (SecurityException e) {}
@@ -169,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //distance beetween user currentPosition and first markerPosition(test)
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
-        LatLng markerPosition = treeMap.get(1).getMarker().getPosition();
+        /*LatLng markerPosition = treeMap.get(1).getMarker().getPosition();
 
         float[] distance = new float[1];
 
@@ -178,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toast = Toast.makeText(this, "Distance to marker : " + distance[0] + "m", Toast.LENGTH_LONG);
         View toastView = toast.getView();
         toastView.setBackgroundResource(R.drawable.toast);
-        toast.show();
+        toast.show();*/
 
        //update current location
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
@@ -245,7 +251,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (toast != null) {
                 toast.cancel();
             }
-            super.onBackPressed();
+            try {
+            locationManager.removeUpdates(this);} catch (SecurityException e) {  }
+            super.finish();
         }
     }
 

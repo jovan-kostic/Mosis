@@ -9,12 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.app.ProgressDialog;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 public class SignUpActivity extends AppCompatActivity {
 
     EditText et_fname,et_lname,et_phone,et_username,et_password;
-    String fname,lname,phone,username,password;
+    String fname,lname,phone,username,password,team="Green Team";
     ProgressDialog pd;
 
     @Override
@@ -37,6 +38,22 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    public void onRadioButtonClicked(View view) {
+
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.green:
+                if (checked)
+                    team = "Green Team";
+                    break;
+            case R.id.red:
+                if (checked)
+                    team = "Red Team";
+                    break;
+        }
+    }
+
     public void signUp (View view) {
         if (!validate())
         {
@@ -54,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
         password = et_password.getText().toString();
         String method = "signup";
         BackgroundTask backgroundTask = new BackgroundTask(this);
-        backgroundTask.execute(method, fname, lname, phone, username, password);
+        backgroundTask.execute(method, fname, lname, phone, username, password, team);
     }
 
     public boolean validate()
