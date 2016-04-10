@@ -32,22 +32,29 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Circle;
 
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     GoogleMap map;
-    Double city_longitude;
-    Double city_latitude;
-    int city_radius;
+    Double city_longitude, city_latitude, marker_longitude, marker_latitude, user_longitude, user_latitude, capture_marker_latitude, capture_marker_longitude;
+    int city_radius, marker_radius,players1,players2,greens,reds,captureMarkerPosition,add_flag_pts;
+    Circle cityCircle;
+    CircleOptions cityCircleOptions;
     LocationManager locationManager;
-    TreeMap<Integer, EventMarker> treeMap = new TreeMap<Integer,EventMarker>();
+    TreeMap<Integer, EventMarker> markerMap = new TreeMap<Integer,EventMarker>();
+    TreeMap<Integer, Player> playerMap = new TreeMap<Integer,Player>();
+    TreeMap<Integer, String> capturingPlayerMap = new TreeMap<Integer,String>();
     Marker marker;
     ProgressDialog pd;
     AlertDialog addMarkerDialog;
     String username;
     String team;
+    int updater;
+    boolean add=true;
+    boolean capture= false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +67,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         username = getIntent().getStringExtra("username");
         team = getIntent().getStringExtra("team");
 
+        updater = 0;
+        add_flag_pts = 10;
+        greens = 0;
+        reds = 0;
+        players1 = 1;
+        players2 = 0;
         city_longitude = 21.8967985; // Nis location
         city_latitude = 43.31914696;
         city_radius = 1800;
+        marker_radius = 300;
 
         //ADDING MARKER
 
@@ -77,35 +91,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LayoutInflater inflater = getLayoutInflater();
                 View dialoglayout = inflater.inflate(R.layout.add_marker, null);
 
-
-                Criteria criteria = new Criteria();
-                String provider = locationManager.getBestProvider(criteria, true);
-                float[] distance = new float[1];
-                try {
-
-                    Location location = locationManager.getLastKnownLocation(provider);
-                    Location.distanceBetween(location.getLatitude(),location.getLongitude(),city_latitude,city_longitude,distance);
-                } catch (SecurityException e) {  }
-
-
-                if (distance[0] > city_radius)
-                {
-                    toast = Toast.makeText(MainActivity.this, "You are out of battlefield boundaries", Toast.LENGTH_LONG);
-                    View toastView = toast.getView();
-                    toastView.setBackgroundResource(R.drawable.toast);
-                    toast.show();
-                    return;
-                }
-
                 addMarkerDialog = new AlertDialog.Builder(MainActivity.this).create();
                 addMarkerDialog.setView(dialoglayout);
                 addMarkerDialog.show();
+
                 pd = new ProgressDialog(MainActivity.this);
                 pd.setMessage("Updating flags...");
                 pd.setCancelable(false);
                 pd.show();
                 GetMarkerTask getMarkerTask = new GetMarkerTask(MainActivity.this);
                 getMarkerTask.execute();
+                GetPlayerTask getPlayerTask = new GetPlayerTask(MainActivity.this);
+                getPlayerTask.execute();
 
                 final Button addMarkerButton = (Button) addMarkerDialog.findViewById(R.id.add_marker);
                 addMarkerButton.setOnClickListener(new View.OnClickListener() {
@@ -115,10 +112,117 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         pd.setMessage("Capturing...");
                         pd.setCancelable(false);
                         pd.show();
-                        AddMarkerTask addMarkerTask = new AddMarkerTask(MainActivity.this);
-                        addMarkerTask.execute();
+
+                        //GAME LOGIC
+                        Criteria criteria = new Criteria();
+                        String provider = locationManager.getBestProvider(criteria, true);
+                        float[] distance = new float[1];
+                        try {
+
+                            Location location = locationManager.getLastKnownLocation(provider);
+                            Location.distanceBetween(location.getLatitude(),location.getLongitude(),city_latitude,city_longitude,distance);
+                        } catch (SecurityException e) {  }
+
+
+                        if (distance[0] > city_radius)
+                        {
+                            toast = Toast.makeText(MainActivity.this, "You are out of battlefield boundaries", Toast.LENGTH_LONG);
+                            View toastView = toast.getView();
+                            toastView.setBackgroundResource(R.drawable.toast);
+                            pd.dismiss();
+                            toast.show();
+                            return;
+                        }
+
+                        //add/capture marker on free location
+                        try {
+
+                            Location location = locationManager.getLastKnownLocation(provider);
+                            user_latitude = location.getLatitude();
+                            user_longitude = location.getLongitude();
+                            for (int i=1;i<markerMap.size()+1;i++)
+                            {
+                                marker_latitude = markerMap.get(i).getLatitude();
+                                marker_longitude = markerMap.get(i).getLongitude();
+                                Location.distanceBetween(user_latitude, user_longitude, marker_latitude, marker_longitude, distance);
+                                if (distance[0] < marker_radius*2 && distance[0] > marker_radius)
+                                {add=false;}
+                                if (distance[0] < marker_radius)
+                                {
+                                    add = false;
+                                    if(!markerMap.get(i).getTeam().equals(team)) {
+                                        capture = true;
+                                        capture_marker_latitude = marker_latitude;
+                                        capture_marker_longitude = marker_longitude;
+                                        captureMarkerPosition = i;
+                                    }
+                                }
+                            }
+                            if (add) {
+                                toast = Toast.makeText(MainActivity.this, "Terittory captured!\nYou gain +10 points", Toast.LENGTH_LONG);
+                                View toastView = toast.getView();
+                                toastView.setBackgroundResource(R.drawable.toast);
+                                toast.show();
+                                AddMarkerTask addMarkerTask = new AddMarkerTask(MainActivity.this);
+                                addMarkerTask.execute();
+                                PointTask pointTask = new PointTask(MainActivity.this);
+                                pointTask.execute(add_flag_pts);
+
+                            } else if(capture) {
+                                int count = 1;
+                                for (int i=1;i<playerMap.size()+1;i++)
+                                {
+                                    marker_latitude = playerMap.get(i).getLatitude();
+                                    marker_longitude = playerMap.get(i).getLongitude();
+                                    Location.distanceBetween(capture_marker_latitude, capture_marker_longitude, marker_latitude, marker_longitude, distance);
+                                    if (distance[0] < marker_radius)
+                                    {
+                                        if (playerMap.get(i).getTeam().equals(team)) {
+                                            players1++;
+                                            capturingPlayerMap.put(count, playerMap.get(i).getUsername());
+                                            count++;
+                                        }
+                                        else
+                                        {
+                                            players2++;
+                                        }
+                                    }
+
+                                }
+                                if (players1>players2) {
+                                    UpdateMarkerTask updateMarkerTask = new UpdateMarkerTask(MainActivity.this);
+                                    updateMarkerTask.execute();
+                                    PointTask pointTask = new PointTask(MainActivity.this);
+                                    pointTask.execute(add_flag_pts);
+                                }
+                                else {
+                                    toast = Toast.makeText(MainActivity.this, "Capturing flag failed...\nOpposite players: " + players2 + "\nvs\nYour team players: " + players1, Toast.LENGTH_LONG);
+                                    View toastView = toast.getView();
+                                    toastView.setBackgroundResource(R.drawable.toast);
+                                    toast.show();
+                                }
+                            }
+
+                            else {
+                                toast = Toast.makeText(MainActivity.this, "Setting flag failed...\nOther flag is too close!", Toast.LENGTH_LONG);
+                                View toastView = toast.getView();
+                                toastView.setBackgroundResource(R.drawable.toast);
+                                toast.show();
+                            }
+                        } catch (SecurityException e) {}
+
+                        if (!capturingPlayerMap.isEmpty())
+                        {
+                            capturingPlayerMap.clear();
+                        }
+                        players1=1;
+                        players2=0;
+                        add = true;
+                        capture = false;
+                        pd.dismiss();
                     }
                 });
+
 
                 Button cancelButton = (Button) addMarkerDialog.findViewById(R.id.cancel);
                 cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         try {
+            //ADD MARKER ON CURRENT LOCATION
             Criteria criteria = new Criteria();
             String provider = locationManager.getBestProvider(criteria, true);
             Location location = locationManager.getLastKnownLocation(provider);
@@ -174,23 +279,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
             map.getUiSettings().setMapToolbarEnabled(false);
 
-            //draw circle - city boundaries
+            //DRAW CITY CIRCLE
             LatLng cityPosition = new LatLng(city_latitude, city_longitude);
-            Circle circle = map.addCircle(new CircleOptions()
-                    .center(cityPosition)
+            cityCircleOptions = new CircleOptions().center(cityPosition)
                     .radius(city_radius)
                     .strokeColor(getResources().getColor(R.color.colorGray))
-                    .fillColor(getResources().getColor(R.color.colorGrayTransparent)));
+                    .fillColor(getResources().getColor(R.color.colorGrayTransparent));
+            cityCircle = map.addCircle(cityCircleOptions);
 
-            //GETTING MARKERS INITIAL
+            //GETTING USERS
+            GetPlayerTask getPlayerTask = new GetPlayerTask(MainActivity.this);
+            getPlayerTask.execute();
 
+            //GETTING MARKERS
             pd = new ProgressDialog(MainActivity.this);
             pd.setMessage("Map preparing...");
             pd.setCancelable(false);
             pd.show();
             GetMarkerTask getMarkerTask = new GetMarkerTask(MainActivity.this);
             getMarkerTask.execute();
-
 
         } catch (SecurityException e) {}
     }
@@ -200,6 +307,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (map != null)
         {
             drawMarker(location);
+            updater++;
+            if (updater == 1)
+            {
+                //update markers and players
+                GetPlayerTask getPlayerTask = new GetPlayerTask(MainActivity.this);
+                getPlayerTask.execute();
+                GetMarkerTask getMarkerTask = new GetMarkerTask(MainActivity.this);
+                getMarkerTask.execute();
+                updater = 0;
+            }
         }
     }
 

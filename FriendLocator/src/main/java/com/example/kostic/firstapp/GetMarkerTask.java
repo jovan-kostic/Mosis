@@ -1,5 +1,6 @@
 package com.example.kostic.firstapp;
 
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -38,11 +39,9 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
     MarkerOptions markerOptions;
     Circle circle;
 
-
     GetMarkerTask(MainActivity ctx) {
         this.ctx = ctx;
     }
-
 
     @Override
     protected void onPreExecute() {
@@ -93,14 +92,14 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
                 }
                 else {
 
-                    if (!ctx.treeMap.isEmpty())
+                    if (!ctx.markerMap.isEmpty())
                     {
-                        for (int i=1;i<ctx.treeMap.size()+1;i++)
+                        for (int i=1;i<ctx.markerMap.size()+1;i++)
                         {
-                            ctx.treeMap.get(i).getMarker().remove();
-                            ctx.treeMap.get(i).getCircle().remove();
+                            ctx.markerMap.get(i).getMarker().remove();
+                            ctx.markerMap.get(i).getCircle().remove();
                         }
-                        ctx.treeMap.clear();
+                        ctx.markerMap.clear();
                     }
                     parseJSON(result);
                 }
@@ -114,6 +113,8 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
         JSONObject jsonObject;
         JSONArray jsonArray;
         int count = 0;
+        ctx.greens = 0;
+        ctx.reds = 0;
 
         try {
             jsonObject = new JSONObject(result);
@@ -132,6 +133,8 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
 
                 if (team.equals("Green Team")) {
 
+                    ctx.greens++;
+
                     markerOptions = new MarkerOptions()
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.green_flag))
                             .position(markerPosition)
@@ -141,10 +144,12 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
 
                     circle = ctx.map.addCircle(new CircleOptions()
                             .center(markerPosition)
-                            .radius(300)
+                            .radius(ctx.marker_radius)
                             .strokeColor(ctx.getResources().getColor(R.color.colorGreen))
                             .fillColor(ctx.getResources().getColor(R.color.colorGreenTransparent)));
                 } else {
+
+                    ctx.reds++;
 
                     markerOptions = new MarkerOptions()
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.red_flag))
@@ -155,16 +160,38 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
 
                     circle = ctx.map.addCircle(new CircleOptions()
                             .center(markerPosition)
-                            .radius(300)
+                            .radius(ctx.marker_radius)
                             .strokeColor(ctx.getResources().getColor(R.color.colorRed))
                             .fillColor(ctx.getResources().getColor(R.color.colorRedTransparent)));
                 }
 
-                    EventMarker eventMarker = new EventMarker(marker, circle, user, longitude, latitude, info);
-                    ctx.treeMap.put(ctx.treeMap.size() + 1, eventMarker);
+                    EventMarker eventMarker = new EventMarker(marker, circle, user, longitude, latitude, info,team);
+                    ctx.markerMap.put(ctx.markerMap.size() + 1, eventMarker);
 
                 count++;
             }
+
+            //draw city circle
+            int strokeColor;
+            int fillColor;
+            if (ctx.greens < ctx.reds)
+            {
+                strokeColor = ctx.getResources().getColor(R.color.colorRedCityCircle);
+                fillColor = ctx.getResources().getColor(R.color.colorRedTransparentCityCircle);
+            }
+            else if (ctx.greens > ctx.reds)
+            {
+                strokeColor = ctx.getResources().getColor(R.color.colorGreenCityCircle);
+                fillColor = ctx.getResources().getColor(R.color.colorGreenTransparentCityCircle);
+            }
+            else
+            {
+                strokeColor = ctx.getResources().getColor(R.color.colorGray);
+                fillColor = ctx.getResources().getColor(R.color.colorGrayTransparent);
+            }
+            ctx.cityCircle.setStrokeColor(strokeColor);
+            ctx.cityCircle.setFillColor(fillColor);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

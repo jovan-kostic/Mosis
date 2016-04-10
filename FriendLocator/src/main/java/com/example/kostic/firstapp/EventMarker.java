@@ -11,9 +11,11 @@ public class EventMarker {
     private double longitude;
     private double latitude;
     private String info;
+    private String team;
 
-    public EventMarker(Marker marker, Circle circle, String user, double longitude, double latitude, String info)
+    public EventMarker(Marker marker, Circle circle, String user, double longitude, double latitude, String info, String team)
     {
+        this.setTeam(team);
         this.setCircle(circle);
         this.setMarker(marker);
         this.setUser(user);
@@ -65,4 +67,12 @@ public class EventMarker {
     public Circle getCircle() { return circle; }
 
     public void setCircle(Circle circle) { this.circle = circle; }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 }
