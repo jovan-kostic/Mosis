@@ -379,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.search:
             {
+                radio_team = "Both";
                 pd = new ProgressDialog(MainActivity.this);
                 pd.setMessage("Updating flags...");
                 pd.setCancelable(false);
