@@ -17,7 +17,7 @@ import java.net.URLEncoder;
 public class PointTask extends AsyncTask<Integer, Void, String> {
 
     MainActivity ctx;
-    int point;
+    int points;
     String point_update_url;
 
     PointTask(MainActivity ctx) {
@@ -34,7 +34,7 @@ public class PointTask extends AsyncTask<Integer, Void, String> {
     @Override
     protected String doInBackground(Integer... params) {
 
-        point = params[0];
+        points = params[0];
 
             try {
                 URL url = new URL(point_update_url);
@@ -45,7 +45,8 @@ public class PointTask extends AsyncTask<Integer, Void, String> {
                 OutputStream outputStream = connection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String data = URLEncoder.encode("user", "UTF-8") +"="+URLEncoder.encode(ctx.username, "UTF-8")+"&"+
-                        URLEncoder.encode("point", "UTF-8") +"="+URLEncoder.encode(String.valueOf(point), "UTF-8");
+                        URLEncoder.encode("team", "UTF-8") +"="+URLEncoder.encode(ctx.team, "UTF-8")+"&"+
+                        URLEncoder.encode("point", "UTF-8") +"="+URLEncoder.encode(String.valueOf(points), "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
