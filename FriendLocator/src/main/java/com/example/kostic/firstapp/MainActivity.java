@@ -793,7 +793,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             try {
             locationManager.removeUpdates(this);} catch (SecurityException e) {  }
-            unregisterReceiver(receiver);
+            if (receiver!=null){unregisterReceiver(receiver);}
             super.finish();
         }
     }
