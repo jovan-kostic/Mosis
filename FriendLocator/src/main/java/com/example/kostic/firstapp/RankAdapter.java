@@ -22,7 +22,7 @@ public class RankAdapter extends ArrayAdapter {
         this.ctx = ctx;
     }
 
-    public void add(User object) {
+    public void add(RankUser object) {
         super.add(object);
         list.add(object);
     }
@@ -61,32 +61,32 @@ public class RankAdapter extends ArrayAdapter {
             userHolder =(UserHolder) row.getTag();
         }
 
-        User user = (User)this.getItem(position);
-        userHolder.tv_place.setText(String.valueOf(user.getPlace()));
+        RankUser rankUser = (RankUser)this.getItem(position);
+        userHolder.tv_place.setText(String.valueOf(rankUser.getPlace()));
 
         //color team
-        if(user.getTeam().equals("Red Team"))
+        if(rankUser.getTeam().equals("Red Team"))
         {
             userHolder.tv_team.setTextColor(Color.parseColor("#e3e60b16"));
-            userHolder.tv_team.setText(user.getTeam());
+            userHolder.tv_team.setText(rankUser.getTeam());
         }
         else {
             userHolder.tv_team.setTextColor(Color.parseColor("#e310a710"));
-            userHolder.tv_team.setText(user.getTeam());
+            userHolder.tv_team.setText(rankUser.getTeam());
         }
 
-        userHolder.tv_rank.setText(String.valueOf(user.getRank()));
+        userHolder.tv_rank.setText(String.valueOf(rankUser.getRank()));
 
-        //bold user
-        if (ctx.user.equals(user.getUsername()))
+        //bold rankUser
+        if (ctx.user.equals(rankUser.getUsername()))
         {
             userHolder.tv_username.setTypeface(null, Typeface.BOLD);
-            userHolder.tv_username.setText(user.getUsername());
+            userHolder.tv_username.setText(rankUser.getUsername());
             return row;
         }
 
         userHolder.tv_username.setTypeface(null, Typeface.NORMAL);
-        userHolder.tv_username.setText(user.getUsername());
+        userHolder.tv_username.setText(rankUser.getUsername());
         return row;
     }
 

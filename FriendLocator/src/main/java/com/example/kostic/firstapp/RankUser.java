@@ -1,13 +1,13 @@
 package com.example.kostic.firstapp;
 
-public class User {
+public class RankUser {
 
     private Integer place;
     private String username;
     private String team;
     private Integer rank;
 
-    public User(int place, String username, String team, int rank)
+    public RankUser(int place, String username, String team, int rank)
     {
         this.setPlace(place);
         this.setUsername(username);

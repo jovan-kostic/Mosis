@@ -1,11 +1,8 @@
 package com.example.kostic.firstapp;
 
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -13,16 +10,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 public class RankTask extends AsyncTask<Void, Void, String> {
 
@@ -111,8 +104,8 @@ public class RankTask extends AsyncTask<Void, Void, String> {
                      username = jsonObject.getString("username");
                      team = jsonObject.getString("team");
                      rank = Integer.parseInt(jsonObject.getString("rank"));
-                     User user = new User(count+1,username,team,rank);
-                     rankAdapter.add(user);
+                     RankUser rankUser = new RankUser(count+1,username,team,rank);
+                     rankAdapter.add(rankUser);
 
                      count++;
                  }

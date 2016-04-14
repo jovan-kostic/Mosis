@@ -10,7 +10,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -32,7 +31,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,7 +47,6 @@ import com.google.android.gms.maps.model.Circle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
@@ -126,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         toastView.setBackgroundResource(R.drawable.toast);
                         toast.show();
                         connectedThread.write(s_write.getBytes());
-
                         break;
                     case MESSAGE_READ:
                         byte[] readBuf = (byte[])msg.obj;
@@ -629,8 +625,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)){
                         if(bluetoothAdapter.getState() == BluetoothAdapter.STATE_OFF){
-                            Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                            startActivityForResult(enableBluetoothIntent,REQUEST_ENABLE_BT);
+                            //Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                            //startActivityForResult(enableBluetoothIntent,REQUEST_ENABLE_BT);
                             friendDialog.dismiss();
                         }
                 }
