@@ -414,13 +414,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 open_profile.setAction("com.example.kostic.firstapp.profile");
                 open_profile.addCategory("android.intent.category.DEFAULT");
                 open_profile.putExtra("username", username);
+                open_profile.putExtra("user", username);
                 startActivity(open_profile);
                 return true;
             case R.id.action_rank:
                 Intent open_rank = new Intent();
                 open_rank.setAction("com.example.kostic.firstapp.Rank");
                 open_rank.addCategory("android.intent.category.DEFAULT");
-                open_rank.putExtra("username", username);
+                open_rank.putExtra("user", username);
                 startActivity(open_rank);
                 return true;
            case R.id.search:

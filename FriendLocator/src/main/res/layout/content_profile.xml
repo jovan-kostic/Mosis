@@ -27,15 +27,30 @@
             android:gravity="top|center">
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginBottom="40dp"
-                android:background="@drawable/ic_search"/>
+                android:id="@+id/image"
+                android:background="@drawable/border_image"
+                android:scaleType="fitXY"
+                android:padding="1dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginBottom="5dp"/>
+
+            <Button
+                android:id="@+id/upload"
+                android:padding="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Upload profile photo"
+                android:textSize="10dp"
+                android:textColor="#ffffffff"
+                android:background="@drawable/button"
+                android:visibility="gone"/>
 
                 <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="1">
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1">
 
                     <TableRow>
                         <TextView

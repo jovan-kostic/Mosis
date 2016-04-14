@@ -31,7 +31,7 @@ public class RankActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        user = getIntent().getStringExtra("username");
+        user = getIntent().getStringExtra("user");
         listView = (ListView)findViewById(R.id.listview);
         rankAdapter = new RankAdapter(this,R.layout.rank_table);
         listView.setAdapter(rankAdapter);
@@ -46,6 +46,7 @@ public class RankActivity extends AppCompatActivity {
                 open_profile.setAction("com.example.kostic.firstapp.profile");
                 open_profile.addCategory("android.intent.category.DEFAULT");
                 open_profile.putExtra("username", username);
+                open_profile.putExtra("user", user);
                 startActivity(open_profile);
             }
         });
