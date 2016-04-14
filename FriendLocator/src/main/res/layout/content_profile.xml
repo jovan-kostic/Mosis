@@ -29,7 +29,7 @@
             <ImageView
                 android:id="@+id/image"
                 android:background="@drawable/border_image"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:padding="1dp"
                 android:layout_width="140dp"
                 android:layout_height="140dp"

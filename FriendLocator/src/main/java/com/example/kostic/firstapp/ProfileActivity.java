@@ -121,7 +121,7 @@ public class ProfileActivity extends AppCompatActivity {
                 int scale = 1;
 
                 while(true) {
-                    if(width_tmp / 2 < 400 || height_tmp / 2 < 400)
+                    if(width_tmp / 2 < 600 || height_tmp / 2 < 800)
                         break;
                     width_tmp /= 2;
                     height_tmp /= 2;
