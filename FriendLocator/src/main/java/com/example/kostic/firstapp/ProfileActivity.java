@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class ProfileActivity extends AppCompatActivity {
 
     String user;
-    TextView fname,lname,phone,username,password;;
+    TextView fname,lname,phone,username,password;
     ProgressDialog pd;
 
     @Override
@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
         lname = (TextView)findViewById(R.id.lastname);
         phone = (TextView)findViewById(R.id.phone);
         username = (TextView)findViewById(R.id.username);
-        password = (TextView)findViewById(R.id.password);
+        //password = (TextView)findViewById(R.id.password);
 
         user = getIntent().getStringExtra("username");
 

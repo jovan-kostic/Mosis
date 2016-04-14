@@ -27,15 +27,43 @@
             android:gravity="top|center">
 
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginBottom="50dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginBottom="40dp"
                 android:background="@drawable/ic_search"/>
 
-                        <TableLayout
+                <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="1">
+
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/t4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Username :"
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:layout_marginBottom="10dp"
+                            android:textColorHint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="20dp"
+                            android:layout_gravity="right"/>
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Username"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:textColorHint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="20dp"/>
+                    </TableRow>
 
                 <TableRow>
                     <TextView
@@ -112,62 +140,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Phone"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:textColorHint="@color/colorPrimary"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20dp"/>
-                </TableRow>
-
-                <TableRow>
-                    <TextView
-                        android:id="@+id/t4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Username :"
-                        android:textStyle="bold"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:layout_marginBottom="10dp"
-                        android:textColorHint="@color/colorPrimary"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20dp"
-                        android:layout_gravity="right"/>
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Username"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:textColorHint="@color/colorPrimary"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20dp"/>
-                </TableRow>
-
-                <TableRow>
-                    <TextView
-                        android:id="@+id/t5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Password :"
-                        android:textStyle="bold"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:layout_marginBottom="10dp"
-                        android:textColorHint="@color/colorPrimary"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20dp"
-                        android:layout_gravity="right"/>
-                    <TextView
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Password"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:layout_marginBottom="10dp"

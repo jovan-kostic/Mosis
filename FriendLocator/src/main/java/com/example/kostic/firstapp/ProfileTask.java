@@ -111,7 +111,7 @@ public class ProfileTask extends AsyncTask<String, Void, String> {
                  ctx.lname.setText(jsonObject.getString("lname"));
                  ctx.phone.setText(jsonObject.getString("phone"));
                  ctx.username.setText(jsonObject.getString("username"));
-                 ctx.password.setText(jsonObject.getString("password"));
+                 //ctx.password.setText(jsonObject.getString("password"));
 
             } catch (JSONException e) {
                  e.printStackTrace();

@@ -94,7 +94,6 @@ public class GetPlayerTask extends AsyncTask<Void, Void, String> {
                     View toastView = toast.getView();
                     toastView.setBackgroundResource(R.drawable.toast);
                     toast.show();
-                    ctx.finish();
                 }
                 else
                 {
