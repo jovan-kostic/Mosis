@@ -44,7 +44,7 @@ public class RankTask extends AsyncTask<Void, Void, String> {
         try {
             URL url = new URL(json_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setConnectTimeout(2000);
+            httpURLConnection.setConnectTimeout(5000);
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder stringBuilder = new StringBuilder();

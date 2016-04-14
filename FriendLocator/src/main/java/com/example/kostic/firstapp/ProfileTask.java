@@ -48,7 +48,7 @@ public class ProfileTask extends AsyncTask<String, Void, String> {
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
-            httpURLConnection.setConnectTimeout(2000);
+            httpURLConnection.setConnectTimeout(5000);
 
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter((new OutputStreamWriter((outputStream))));

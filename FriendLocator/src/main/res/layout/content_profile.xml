@@ -47,17 +47,17 @@
                 android:visibility="gone"/>
 
                 <TableLayout
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:stretchColumns="1">
 
                     <TableRow>
                         <TextView
-                            android:id="@+id/t4"
+                            android:id="@+id/t1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Username :"
+                            android:text="Username :"
                             android:textStyle="bold"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -82,10 +82,10 @@
 
                 <TableRow>
                     <TextView
-                        android:id="@+id/t1"
+                        android:id="@+id/t2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="First name :"
+                        android:text="First name :"
                         android:textStyle="bold"
                         android:maxLines="1"
                         android:singleLine="true"
@@ -98,7 +98,7 @@
                         android:id="@+id/firstname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="First name"
+                        android:text="First name"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:layout_marginBottom="10dp"
@@ -110,10 +110,10 @@
 
                 <TableRow>
                     <TextView
-                        android:id="@+id/t2"
+                        android:id="@+id/t32"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Last name :"
+                        android:text="Last name :"
                         android:textStyle="bold"
                         android:maxLines="1"
                         android:singleLine="true"
@@ -138,10 +138,10 @@
 
                 <TableRow>
                     <TextView
-                        android:id="@+id/t3"
+                        android:id="@+id/t4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Phone :"
+                        android:text="Phone :"
                         android:maxLines="1"
                         android:textStyle="bold"
                         android:singleLine="true"

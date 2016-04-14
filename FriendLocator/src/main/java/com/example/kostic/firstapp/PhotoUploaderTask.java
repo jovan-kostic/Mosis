@@ -47,7 +47,7 @@ public class PhotoUploaderTask extends AsyncTask<String, Void, String> {
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoInput(true);
-            httpURLConnection.setConnectTimeout(2000);
+            httpURLConnection.setConnectTimeout(15000);
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
             String data = URLEncoder.encode("user", "UTF-8") +"="+URLEncoder.encode(user, "UTF-8")+"&"+
