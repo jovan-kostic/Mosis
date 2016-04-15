@@ -95,7 +95,6 @@ public class ProfileTask extends AsyncTask<String, Void, String> {
                 {
                     parseJSON(result);
                 }
-                ctx.pd.dismiss();
             }
 
          public void parseJSON(String result)

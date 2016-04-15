@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -138,12 +139,19 @@ public class GetPlayerTask extends AsyncTask<Void, Void, String> {
 
                      LatLng markerPosition = new LatLng(latitude, longitude);
 
-                     if (team.equals(ctx.team))
-                     {
-                         markerOptions = new MarkerOptions()
-                                 .position(markerPosition)
-                                 .title(username);
-                         marker = ctx.map.addMarker(markerOptions);
+                     if (team.equals(ctx.team)) {
+                         if (team.equals("Green Team")) {
+                             markerOptions = new MarkerOptions()
+                                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.green_marker))
+                                     .position(markerPosition)
+                                     .title(username);
+                             marker = ctx.map.addMarker(markerOptions);
+                         } else {
+                             markerOptions = new MarkerOptions()
+                                     .position(markerPosition)
+                                     .title(username);
+                             marker = ctx.map.addMarker(markerOptions);
+                         }
                      }
 
                      Player player = new Player(marker,username,longitude,latitude,team,rank);

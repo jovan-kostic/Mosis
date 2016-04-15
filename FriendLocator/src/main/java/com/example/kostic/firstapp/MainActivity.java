@@ -323,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Location location = locationManager.getLastKnownLocation(provider);
             LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.my_location_marker))
                     .position(currentPosition)
                     .title(username);
 
@@ -381,9 +382,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationUpdateTask.execute(location.getLatitude(),location.getLongitude());
 
        //update current location
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition,16));
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
 
         MarkerOptions markerOptions = new MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.my_location_marker))
                 .position(currentPosition)
                 .title(username);
 
