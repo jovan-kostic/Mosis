@@ -104,11 +104,13 @@ public class UpdateMarkerTask extends AsyncTask<String, Void, String> {
                         int fillColor;
 
                        if (ctx.team.equals("Green Team")) {
-                            ctx.greens++;
+                             ctx.greens++;
+                             ctx.reds--;
                              strokeColor = ctx.getResources().getColor(R.color.colorGreen);
                              fillColor = ctx.getResources().getColor(R.color.colorGreenTransparent);
                         } else {
-                           ctx.reds++;
+                            ctx.reds++;
+                            ctx.greens--;
                             strokeColor = ctx.getResources().getColor(R.color.colorRed);
                             fillColor = ctx.getResources().getColor(R.color.colorRedTransparent);
                         }
@@ -117,7 +119,7 @@ public class UpdateMarkerTask extends AsyncTask<String, Void, String> {
                        ctx.markerMap.get(ctx.captureMarkerPosition).getCircle().setFillColor(fillColor);
 
                         //draw city circle
-                        if (ctx.greens < ctx.greens)
+                        if (ctx.greens < ctx.reds)
                         {
                             strokeColor = ctx.getResources().getColor(R.color.colorRedCityCircle);
                             fillColor = ctx.getResources().getColor(R.color.colorRedTransparentCityCircle);

@@ -88,7 +88,6 @@ public class GetMarkerTask extends AsyncTask<String, Void, String> {
                     View toastView = toast.getView();
                     toastView.setBackgroundResource(R.drawable.toast);
                     toast.show();
-                    ctx.addMarkerDialog.dismiss();
                 }
                 else {
 

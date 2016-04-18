@@ -20,6 +20,7 @@ public class RankActivity extends AppCompatActivity {
     String user;
     ListView listView;
     RankAdapter rankAdapter;
+    TextView tv_green_points, tv_red_points;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,8 @@ public class RankActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv_username = (TextView)view.findViewById(R.id.username);
-                String username = (String)tv_username.getText();
+                TextView tv_username = (TextView) view.findViewById(R.id.username);
+                String username = (String) tv_username.getText();
                 Intent open_profile = new Intent();
                 open_profile.setAction("com.example.kostic.firstapp.profile");
                 open_profile.addCategory("android.intent.category.DEFAULT");
@@ -55,8 +56,15 @@ public class RankActivity extends AppCompatActivity {
         pd.setMessage("Retrieving information...");
         pd.setCancelable(false);
         pd.show();
+
         RankTask rankTask= new RankTask(this,listView,rankAdapter);
         rankTask.execute();
+
+        tv_green_points = (TextView)findViewById(R.id.pointsGreen);
+        tv_red_points = (TextView)findViewById(R.id.pointsRed);
+        TeamPointsTask teamPointsTask= new TeamPointsTask(this);
+        teamPointsTask.execute();
+
 
     }
 

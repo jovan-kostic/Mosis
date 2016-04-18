@@ -145,6 +145,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LayoutInflater inflater = getLayoutInflater();
                 View dialoglayout = inflater.inflate(R.layout.add_marker, null);
 
+                try {
+                    Criteria criteria = new Criteria();
+                    String provider = locationManager.getBestProvider(criteria, true);
+                    Location location = locationManager.getLastKnownLocation(provider);
+                    LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16)); }
+                catch (SecurityException e) {}
+
                 addMarkerDialog = new AlertDialog.Builder(MainActivity.this).create();
                 addMarkerDialog.setView(dialoglayout);
                 addMarkerDialog.show();
@@ -174,6 +182,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         try {
 
                             Location location = locationManager.getLastKnownLocation(provider);
+                            LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
                             Location.distanceBetween(location.getLatitude(),location.getLongitude(),city_latitude,city_longitude,distance);
                         } catch (SecurityException e) {  }
 
@@ -322,6 +332,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String provider = locationManager.getBestProvider(criteria, true);
             Location location = locationManager.getLastKnownLocation(provider);
             LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+            LocationUpdateTask locationUpdateTask = new LocationUpdateTask(MainActivity.this);
+            locationUpdateTask.execute(location.getLatitude(), location.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.my_location_marker))
                     .position(currentPosition)
@@ -352,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             getMarkerTask.execute();
 
         } catch (SecurityException e) {}
+          catch (NullPointerException e ){}
     }
 
     @Override
@@ -379,10 +392,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
         LocationUpdateTask locationUpdateTask = new LocationUpdateTask(MainActivity.this);
-        locationUpdateTask.execute(location.getLatitude(),location.getLongitude());
-
-       //update current location
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 16));
+        locationUpdateTask.execute(location.getLatitude(), location.getLongitude());
 
         MarkerOptions markerOptions = new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.my_location_marker))

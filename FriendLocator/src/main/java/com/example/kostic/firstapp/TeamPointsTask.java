@@ -2,7 +2,6 @@ package com.example.kostic.firstapp;
 
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -10,41 +9,46 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
-public class RankTask extends AsyncTask<Void, Void, String> {
+public class TeamPointsTask extends AsyncTask<String, Void, String> {
 
     RankActivity ctx;
+    String user;
     String json_url;
     String JSON_STRING;
-    RankAdapter rankAdapter;
-    ListView listView;
 
 
-    RankTask(RankActivity ctx, ListView listView, RankAdapter rankAdapter) {
+    TeamPointsTask(RankActivity ctx) {
         this.ctx = ctx;
-        this.listView = listView;
-        this.rankAdapter = rankAdapter;
     }
 
     @Override
     protected void onPreExecute() {
 
-        json_url = "http://192.168.1.4/fl_server/rank.php";
+        json_url = "http://192.168.1.4/fl_server/team_points.php";
         super.onPreExecute();
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    protected String doInBackground(String... params) {
         try {
             URL url = new URL(json_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
             httpURLConnection.setConnectTimeout(5000);
+
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder stringBuilder = new StringBuilder();
@@ -82,35 +86,23 @@ public class RankTask extends AsyncTask<Void, Void, String> {
                 {
                     parseJSON(result);
                 }
-
+                ctx.pd.dismiss();
             }
 
          public void parseJSON(String result)
          {
              JSONObject jsonObject;
              JSONArray jsonArray;
-             int count = 0;
-             String username,team;
-             Integer rank;
 
              try {
-
                  jsonObject = new JSONObject(result);
                  jsonArray = jsonObject.getJSONArray("server_response");
+                 jsonObject = jsonArray.getJSONObject(0);
+                 ctx.tv_green_points.setText(jsonObject.getString("points"));
+                 jsonObject = jsonArray.getJSONObject(1);
+                 ctx.tv_red_points.setText(jsonObject.getString("points"));
 
-                 while(count<jsonArray.length())
-                 {
-                     jsonObject = jsonArray.getJSONObject(count);
-                     username = jsonObject.getString("username");
-                     team = jsonObject.getString("team");
-                     rank = Integer.parseInt(jsonObject.getString("rank"));
-                     RankUser rankUser = new RankUser(count+1,username,team,rank);
-                     rankAdapter.add(rankUser);
-
-                     count++;
-                 }
-
-            } catch (JSONException e) {
+             } catch (JSONException e) {
                  e.printStackTrace();
              }
          }
