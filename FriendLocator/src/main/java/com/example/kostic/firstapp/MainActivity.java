@@ -436,6 +436,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 open_rank.putExtra("user", username);
                 startActivity(open_rank);
                 return true;
+            case R.id.action_help:
+                Intent open_help = new Intent();
+                open_help.setAction("com.example.kostic.firstapp.Help");
+                open_help.addCategory("android.intent.category.DEFAULT");
+                startActivity(open_help);
+                return true;
            case R.id.search:
                 radio_team = "Both";
                 pd = new ProgressDialog(MainActivity.this);

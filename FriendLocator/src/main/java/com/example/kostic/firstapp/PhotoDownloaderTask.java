@@ -73,10 +73,10 @@ public class PhotoDownloaderTask extends AsyncTask<String, Void, String> {
             protected void onPostExecute(String result){
                 if (result.startsWith("Retrieving profile photo failed..."))
                 {
-                    Toast toast = Toast.makeText(ctx, result, Toast.LENGTH_LONG);
+                    /*Toast toast = Toast.makeText(ctx, result, Toast.LENGTH_LONG);
                     View toastView = toast.getView();
                     toastView.setBackgroundResource(R.drawable.toast);
-                    toast.show();
+                    toast.show();*/
                 }
                 else
                 {

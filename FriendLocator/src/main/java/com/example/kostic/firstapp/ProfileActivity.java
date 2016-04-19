@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         ProfileTask profileTask = new ProfileTask(this);
         profileTask.execute(username_clicked);
         pd = new ProgressDialog(this);
-        pd.setMessage("Retrieving profile photo...");
+        pd.setMessage("Retrieving profile information...");
         pd.show();
         PhotoDownloaderTask photoDownloaderTask = new PhotoDownloaderTask(this);
         photoDownloaderTask.execute(username_clicked);
@@ -126,9 +126,8 @@ public class ProfileActivity extends AppCompatActivity {
                 o2.inSampleSize = scale;
                 Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, o2);
 
-                //Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos); //bm is the bitmap object
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
                 byte[] b = baos.toByteArray();
                 String imgString = Base64.encodeToString(b, Base64.NO_WRAP);
                 image.setImageBitmap(bitmap);

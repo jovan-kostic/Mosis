@@ -4,8 +4,10 @@
     <string name="title_activity_main">Battlefield</string>
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_rank">Rank</string>
+    <string name="title_activity_help">Help</string>
     <string name="action_profile">Profile</string>
     <string name="action_rank">Rank</string>
+    <string name="action_help">Help</string>
     <string name="action_search">Search</string>
     <string name="action_add_friend">Add friend</string>
 </resources>

@@ -2,20 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.kostic.firstapp">
 
+    <permission
+        android:name="com.example.kostic.firstapp.permission.MAP_RECIEVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.kostic.firstapp.permission.MAP_RECIEVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBVOlG4_q6IKQ8-Pkr-n1xv22nv_1YLrNM">
-        </meta-data>
+            android:value="AIzaSyBVOlG4_q6IKQ8-Pkr-n1xv22nv_1YLrNM"></meta-data>
 
         <activity
             android:name=".LoginActivity"
@@ -40,10 +51,10 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_main"
             android:parentActivityName=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.example.kostic.firstapp.Main" />
 
@@ -52,41 +63,40 @@
         </activity>
         <activity
             android:name=".ProfileActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.example.kostic.firstapp.profile" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-       <activity
+        <activity
             android:name=".RankActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_rank"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.example.kostic.firstapp.Rank" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".HelpActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_help"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="com.example.kostic.firstapp.Help" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
-
-    <permission
-        android:name="com.example.kostic.firstapp.permission.MAP_RECIEVE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.example.kostic.firstapp.permission.MAP_RECIEVE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
