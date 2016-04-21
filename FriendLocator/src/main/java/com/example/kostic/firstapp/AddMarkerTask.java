@@ -115,6 +115,10 @@ public class AddMarkerTask extends AsyncTask<String, Void, String> {
                         toast.show();
                     }
                     else {
+                        Toast toast = Toast.makeText(ctx, "Terittory captured!\nYou gain +10 points", Toast.LENGTH_LONG);
+                        View toastView = toast.getView();
+                        toastView.setBackgroundResource(R.drawable.toast);
+                        toast.show();
 
                         LatLng currentPosition = new LatLng(latitude, longitude);
 

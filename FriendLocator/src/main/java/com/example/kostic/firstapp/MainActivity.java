@@ -21,6 +21,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
@@ -223,10 +224,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                             if (add) {
-                                toast = Toast.makeText(MainActivity.this, "Terittory captured!\nYou gain +10 points", Toast.LENGTH_LONG);
-                                View toastView = toast.getView();
-                                toastView.setBackgroundResource(R.drawable.toast);
-                                toast.show();
                                 AddMarkerTask addMarkerTask = new AddMarkerTask(MainActivity.this);
                                 addMarkerTask.execute();
                                 PointTask pointTask = new PointTask(MainActivity.this);
@@ -251,10 +248,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                                 }
                                 if (players1>players2) {
-                                    toast = Toast.makeText(MainActivity.this, "Enemy territory captured!\nYou gain +20 points", Toast.LENGTH_LONG);
-                                    View toastView = toast.getView();
-                                    toastView.setBackgroundResource(R.drawable.toast);
-                                    toast.show();
                                     UpdateMarkerTask updateMarkerTask = new UpdateMarkerTask(MainActivity.this);
                                     updateMarkerTask.execute();
                                     PointTask pointTask = new PointTask(MainActivity.this);

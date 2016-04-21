@@ -100,6 +100,10 @@ public class UpdateMarkerTask extends AsyncTask<String, Void, String> {
                         toast.show();
                     }
                     else {
+                        Toast toast = Toast.makeText(ctx, "Enemy territory captured!\nYou gain +20 points", Toast.LENGTH_LONG);
+                        View toastView = toast.getView();
+                        toastView.setBackgroundResource(R.drawable.toast);
+                        toast.show();
                         int strokeColor;
                         int fillColor;
 
